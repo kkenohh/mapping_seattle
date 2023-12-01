@@ -9,9 +9,60 @@
     <link rel="stylesheet" href="./css/styles.css">
   </head>
   <body>
-    <div id="filter-bar"></div>
-    <div id="map"></div>
+    <main id="container">
+      <div id="filter-bar">
+        
+        <h2>This will be the filter</h2>
 
-    <script src="./js/index.js"></script>
+      </div>
+      <div id="map"></div>
+
+    </main>
+    
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoiam9obnNjaCIsImEiOiJjbG9zdmtkb20wM3huMnFwa2Q0cWk2cnlmIn0.th6ktuM1-OmJ9_-Q58ru4Q';
+        const map = new mapboxgl.Map({
+            container : 'map',
+            style: 'mapbox://styles/mapbox/outdoors-v12',
+            zoom: 9,
+            center: [-121.9, 47.5]
+        });
+
+        async function geojsonFetch() {
+            let response = await fetch('assets/Cleaned_Restaurant_Inspections.geojson');
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            let restaurants = await response.json();
+
+            map.on('load', () => {
+                map.addSource('restaurants', {
+                    type: 'geojson',
+                    data: restaurants
+                });
+
+                map.addLayer({
+                    'id': 'restaurants-layer',
+                    'type': 'circle',
+                    'source': 'restaurants',
+                    'paint': {
+                        'circle-radius': 6,
+                        'circle-stroke-width': 1,
+                        'circle-color': 'red',
+                        'circle-stroke-color': 'black'
+                    }
+                });
+            });
+        }
+
+        geojsonFetch()
+            .cache(e=> {
+                console.log('A problem with the fetch operation has ocurred: ' + e.message);
+            });
+
+    </script>
   </body>
 </html>

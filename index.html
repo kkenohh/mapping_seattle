@@ -13,11 +13,11 @@
     <main id="container">
       <div id="filter-bar">
         
-        <h2>This will be the filter</h2>
+        <h2 id="text-bar-filter"> Restaurant Information</h2>
+        <div id = "text-description"> Hover over a location!</div>
 
       </div>
       <div id="map"></div>
-
     </main>
     
 
@@ -52,6 +52,18 @@
                         'circle-color': 'red',
                         'circle-stroke-color': 'black'
                     }
+                });
+                map.on('mousemove', ({point}) => {
+                    const restaurant = map.queryRenderedFeatures(point, {
+                        layers: ['restaurants-layer']
+                    });
+                    document.getElementById('text-description').innerHTML = restaurant.length ?
+                        `<h3>${restaurant[0].properties.NAME}</h3>
+                        <p><strong>Address:</strong> ${restaurant[0].properties.ADDRESS} </p>
+                        <p><strong> Seat Capacity:</strong> ${restaurant[0].properties.SEAT_CAP}
+                        <p><strong>Score Inspection:</strong> ${restaurant[0].properties.SCORE_INSPECTION}</p>` 
+                        :
+                        `<p>Hover over a restaurant!</p>`
                 });
             });
         }

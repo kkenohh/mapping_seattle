@@ -21,7 +21,8 @@
             <li><a href="risk_exposure.html">Risk</a></li>
         </ul>
     
-    
+    <div class='map-overlay' id='legend'></div>
+
     <main id="container">
       <div id="filter-bar">
         
@@ -55,16 +56,61 @@
                 });
 
                 map.addLayer({
-                    'id': 'restaurants-layer',
-                    'type': 'circle',
-                    'source': 'restaurants',
-                    'paint': {
-                        'circle-radius': 6,
-                        'circle-stroke-width': 1,
-                        'circle-color': 'red',
-                        'circle-stroke-color': 'black'
-                    }
-                });
+                'id': 'restaurants-layer',
+                'type': 'circle',
+                'source': 'restaurants',
+                'paint': {
+                    'circle-radius': 6,
+                    'circle-stroke-width': 1,
+                    'circle-color': [
+                        'step',
+                        ['to-number', ['get', 'SCORE_INSPECTION']],
+                        '#ff0000',   // stop_output_0
+                        69,          // stop_input_0
+                        '#ffff00',   // stop_output_1
+                        79,         // stop_input_1
+                        '#0040ff',   // stop_output_2
+                        89,         // stop_input_2
+                        '#00ff00',   // stop_output_3
+                        100,         // stop_input_3
+                        '#00ff00',   // Default color for values above 90
+                    ],
+                    'circle-stroke-color': 'black',
+                    'circle-opacity': .4
+                }
+            });
+
+            const layers = [
+                    '0-69',
+                    '70-79',
+                    '80-89',
+                    '90+'
+                ];
+
+            const colors = [
+                '#ff0000',
+                '#ffff00',
+                '#0040ff',
+                '#00ff00',
+            ];
+
+            const legend = document.getElementById('legend');
+            legend.innerHTML = "<b>Score Inspection<br>";
+
+            layers.forEach((layer, i) => {
+                const color = colors[i];
+                const item = document.createElement('div');
+                const key = document.createElement('span');
+                key.className = 'legend-key';
+                key.style.backgroundColor = color;
+
+                const value = document.createElement('span');
+                value.innerHTML = `${layer}`;
+                item.appendChild(key);
+                item.appendChild(value);
+                legend.appendChild(item);
+            });
+
                 map.on('mousemove', ({point}) => {
                     const restaurant = map.queryRenderedFeatures(point, {
                         layers: ['restaurants-layer']

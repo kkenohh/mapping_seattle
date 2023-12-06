@@ -1,11 +1,12 @@
 library(sf)
-# Thinking of creating a summary page that shows the overall inspection
+# Thinking of creating a summary page that shows the overall inspection 
 # Create data table from assets
 geojson_file <- "Cleaned_Restaurant_Inspections.geojson"
 sf_data <- st_read(geojson_file)
 str(sf_data)
 
 #Max Score Inspection, 98
+sd_data$SCORE_INSPECTION <- as.numeric(sd_data$SCORE_INSPECTION)
 max_score_insp <- max(sf_data$SCORE_INSPECTION, na.rm = TRUE)
 
 #Max Violation Points, 25

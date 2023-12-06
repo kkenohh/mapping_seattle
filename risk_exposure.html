@@ -21,6 +21,8 @@
             <li><a href="risk_exposure.html">Risk</a></li>
         </ul>
     
+    <div class='map-overlay' id='legend'></div>
+
     
     <main id="container">
       <div id="filter-bar">
@@ -54,17 +56,56 @@
                     data: restaurants
                 });
 
-                map.addLayer({
-                    'id': 'restaurants-layer',
-                    'type': 'circle',
-                    'source': 'restaurants',
-                    'paint': {
-                        'circle-radius': 6,
-                        'circle-stroke-width': 1,
-                        'circle-color': 'red',
-                        'circle-stroke-color': 'black'
-                    }
-                });
+              map.addLayer({
+                'id': 'restaurants-layer',
+                'type': 'circle',
+                'source': 'restaurants',
+                'paint': {
+                    'circle-radius': 6,
+                    'circle-stroke-width': 1,
+                    'circle-color': [
+                        'match',
+                        ['get', 'RISK'],
+                        'I', '#00ff40',   // Color for "GREEN"
+                        'II', '#ffff00',  // Color for "YELLOW"
+                        'III', '#ff0000', // Color for "RED"
+                        '#808080'         // COlor for missing values (Gray)
+                    ],
+                    'circle-stroke-color': 'black',
+                    'circle-opacity': 0.4
+                }
+              });
+
+            const layers = [
+                    'I',
+                    'II',
+                    'III',
+                    'No Values'
+                ];
+
+            const colors = [
+                '#00ff40',
+                '#ffff00',
+                '#ff0000',
+                '#808080',
+            ];
+
+            const legend = document.getElementById('legend');
+            legend.innerHTML = "<b>Risk type<br>";
+
+            layers.forEach((layer, i) => {
+                const color = colors[i];
+                const item = document.createElement('div');
+                const key = document.createElement('span');
+                key.className = 'legend-key';
+                key.style.backgroundColor = color;
+
+                const value = document.createElement('span');
+                value.innerHTML = `${layer}`;
+                item.appendChild(key);
+                item.appendChild(value);
+                legend.appendChild(item);
+            });
                 map.on('mousemove', ({point}) => {
                     const restaurant = map.queryRenderedFeatures(point, {
                         layers: ['restaurants-layer']

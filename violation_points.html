@@ -11,17 +11,18 @@
   </head>
   <body>
 
-        <!-- Adding a map option box -->
-        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search type of Chloropleth">
-        <ul id="myUL">
-            <li><a href="index.html">Index</a></li>
-            <li><a href="score_inspection.html">score Inspection</a></li>
+    <!-- Adding a map option box -->
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search type of Chloropleth">
+    <ul id="myUL">
+        <li><a href="index.html">Index</a></li>
+        <li><a href="score_inspection.html">score Inspection</a></li>
+
+        <li><a href="violation_points.html">Violoation</a></li>
+        <li><a href="risk_exposure.html">Risk</a></li>
+    </ul>
     
-            <li><a href="violation_points.html">Violoation</a></li>
-            <li><a href="risk_exposure.html">Risk</a></li>
-        </ul>
-    
-    
+    <div class='map-overlay' id='legend'></div>
+
     <main id="container">
       <div id="filter-bar">
         
@@ -55,16 +56,52 @@
                 });
 
                 map.addLayer({
-                    'id': 'restaurants-layer',
-                    'type': 'circle',
-                    'source': 'restaurants',
-                    'paint': {
-                        'circle-radius': 6,
-                        'circle-stroke-width': 1,
-                        'circle-color': 'red',
-                        'circle-stroke-color': 'black'
-                    }
-                });
+                  'id': 'restaurants-layer',
+                  'type': 'circle',
+                  'source': 'restaurants',
+                  'paint': {
+                      'circle-radius': 6,
+                      'circle-stroke-width': 1,
+                      'circle-color': [
+                          'match',
+                          ['get', 'VIOLATIONTYPE'],
+                          'RED', '#ff0000',   // Color for "RED"
+                          'BLUE', '#0000ff',  // Color for "BLUE"
+                          '#808080'            
+                      ],
+                      'circle-stroke-color': 'black',
+                      'circle-opacity': 0.4
+                  }
+              });
+
+            const layers = [
+                    'Ctritical Violations',
+                    'Non-Ctritical Violations',
+                    'Missing Values'
+                ];
+
+            const colors = [
+                '#ff0000',
+                '#0000ff',
+                '#808080'
+            ];
+
+            const legend = document.getElementById('legend');
+            legend.innerHTML = "<b>Violation Types<br>";
+
+            layers.forEach((layer, i) => {
+                const color = colors[i];
+                const item = document.createElement('div');
+                const key = document.createElement('span');
+                key.className = 'legend-key';
+                key.style.backgroundColor = color;
+
+                const value = document.createElement('span');
+                value.innerHTML = `${layer}`;
+                item.appendChild(key);
+                item.appendChild(value);
+                legend.appendChild(item);
+            });
                 map.on('mousemove', ({point}) => {
                     const restaurant = map.queryRenderedFeatures(point, {
                         layers: ['restaurants-layer']

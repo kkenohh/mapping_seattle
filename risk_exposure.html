@@ -1,147 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Meta tags for character set, viewport, and page title -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapping Restaurants in Seattle</title>
+
+    <!-- Meta tags for author and description -->
     <meta name="author" content="Group 7 (Ken, Lesther, Jack, Jason, Falldiusa)">
     <meta name="description" content="Group 7's final project mapping restaurants in Seattle for user convenience">
+
+    <!-- Link to external stylesheet -->
     <link rel="stylesheet" href="./css/styles.css">
+
+    <!-- Include Mapbox GL JS library -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.js"></script>
   </head>
   <body>
 
-        <!-- Adding a map option box -->
-        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search type of Chloropleth">
-        <ul id="myUL">
-            <li><a href="index.html">Index</a></li>
-            <li><a href="score_inspection.html">score Inspection</a></li>
-    
-            <li><a href="violation_points.html">Violoation</a></li>
-            <li><a href="risk_exposure.html">Risk</a></li>
-        </ul>
-    
+    <!-- Adding a map option box and navigation menu -->
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search type of Chloropleth">
+    <ul id="myUL">
+      <li><a href="index.html">Index</a></li>
+      <li><a href="score_inspection.html">score Inspection</a></li>
+      <li><a href="violation_points.html">Violoation</a></li>
+      <li><a href="risk_exposure.html">Risk</a></li>
+    </ul>
+
+    <!-- Map legend overlay -->
     <div class='map-overlay' id='legend'></div>
 
-    
+    <!-- Main content container -->
     <main id="container">
+      <!-- Filter bar and text description -->
       <div id="filter-bar">
-        
         <h2 id="text-bar-filter"> Restaurant Information</h2>
-        <div id = "text-description"> Hover over a location!</div>
-
+        <div id="text-description"> Hover over a location!</div>
       </div>
+      
+      <!-- Map container -->
       <div id="map"></div>
     </main>
-    
 
+    <!-- JavaScript code -->
     <script>
-        mapboxgl.accessToken = 
-          'pk.eyJ1Ijoiam9obnNjaCIsImEiOiJjbG9zdmtkb20wM3huMnFwa2Q0cWk2cnlmIn0.th6ktuM1-OmJ9_-Q58ru4Q';
-        let map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/outdoors-v12',
-            zoom: 10,
-            center: [-122.3, 47.55]
-        });
+      // Set Mapbox access token
+      mapboxgl.accessToken = 'pk.eyJ1Ijoiam9obnNjaCIsImEiOiJjbG9zdmtkb20wM3huMnFwa2Q0cWk2cnlmIn0.th6ktuM1-OmJ9_-Q58ru4Q';
 
-        async function geojsonFetch() {
-            let response, restaurants; 
-            response = await fetch('assets/Cleaned_Restaurant_Inspections.geojson');
-            restaurants = await response.json();
+      // Create a new Mapbox map
+      let map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/outdoors-v12',
+        zoom: 10,
+        center: [-122.3, 47.55]
+      });
 
-            map.on('load', function loadingData() {
-                map.addSource('restaurants', {
-                    type: 'geojson',
-                    data: restaurants
-                });
+      // Fetch GeoJSON data and add it to the map
+      async function geojsonFetch() {
+        let response, restaurants; 
+        response = await fetch('assets/Cleaned_Restaurant_Inspections.geojson');
+        restaurants = await response.json();
 
-              map.addLayer({
-                'id': 'restaurants-layer',
-                'type': 'circle',
-                'source': 'restaurants',
-                'paint': {
-                    'circle-radius': 6,
-                    'circle-stroke-width': 1,
-                    'circle-color': [
-                        'match',
-                        ['get', 'RISK'],
-                        'I', '#00ff40',   // Color for "GREEN"
-                        'II', '#ffff00',  // Color for "YELLOW"
-                        'III', '#ff0000', // Color for "RED"
-                        '#808080'         // COlor for missing values (Gray)
-                    ],
-                    'circle-stroke-color': 'black',
-                    'circle-opacity': 0.4
-                }
-              });
+        map.on('load', function loadingData() {
+          map.addSource('restaurants', {
+            type: 'geojson',
+            data: restaurants
+          });
 
-            const layers = [
-                    'I',
-                    'II',
-                    'III',
-                    'No Values'
-                ];
-
-            const colors = [
-                '#00ff40',
-                '#ffff00',
-                '#ff0000',
-                '#808080',
-            ];
-
-            const legend = document.getElementById('legend');
-            legend.innerHTML = "<b>Risk type<br>";
-
-            layers.forEach((layer, i) => {
-                const color = colors[i];
-                const item = document.createElement('div');
-                const key = document.createElement('span');
-                key.className = 'legend-key';
-                key.style.backgroundColor = color;
-
-                const value = document.createElement('span');
-                value.innerHTML = `${layer}`;
-                item.appendChild(key);
-                item.appendChild(value);
-                legend.appendChild(item);
-            });
-                map.on('mousemove', ({point}) => {
-                    const restaurant = map.queryRenderedFeatures(point, {
-                        layers: ['restaurants-layer']
-                    });
-                    document.getElementById('text-description').innerHTML = restaurant.length ?
-                        `<h3>${restaurant[0].properties.NAME}</h3>
-                        <p><strong>Address:</strong> ${restaurant[0].properties.ADDRESS} </p>
-                        <p><strong> Seat Capacity:</strong> ${restaurant[0].properties.SEAT_CAP}
-                        <p><strong>Score Inspection:</strong> ${restaurant[0].properties.SCORE_INSPECTION}</p>` 
-                        :
-                        `<p>Hover over a restaurant!</p>`
-                });
-            });
-        }
-
-        function myFunction() {
-          // Declare variables
-          var input, filter, ul, li, a, i, txtValue;
-          input = document.getElementById('myInput');
-          filter = input.value.toUpperCase();
-          ul = document.getElementById("myUL");
-          li = ul.getElementsByTagName('li');
-
-          // Loop through all list items, and hide those who don't match the search query
-          for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
-            txtValue = a.textContent || a.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-              li[i].style.display = "";
-            } else {
-              li[i].style.display = "none";
+          map.addLayer({
+            'id': 'restaurants-layer',
+            'type': 'circle',
+            'source': 'restaurants',
+            'paint': {
+              'circle-radius': 6,
+              'circle-stroke-width': 1,
+              'circle-color': [
+                'match',
+                ['get', 'RISK'],
+                'I', '#00ff40',   // Color for "GREEN"
+                'II', '#ffff00',  // Color for "YELLOW"
+                'III', '#ff0000', // Color for "RED"
+                '#808080'         // Color for missing values (Gray)
+              ],
+              'circle-stroke-color': 'black',
+              'circle-opacity': 0.4
             }
+          });
+
+          // Create legend for map overlay
+          const layers = ['I', 'II', 'III', 'No Values'];
+          const colors = ['#00ff40', '#ffff00', '#ff0000', '#808080'];
+          const legend = document.getElementById('legend');
+          legend.innerHTML = "<b>Risk type<br>";
+
+          layers.forEach((layer, i) => {
+            const color = colors[i];
+            const item = document.createElement('div');
+            const key = document.createElement('span');
+            key.className = 'legend-key';
+            key.style.backgroundColor = color;
+
+            const value = document.createElement('span');
+            value.innerHTML = `${layer}`;
+            item.appendChild(key);
+            item.appendChild(value);
+            legend.appendChild(item);
+          });
+
+          // Display restaurant information on hover
+          map.on('mousemove', ({point}) => {
+            const restaurant = map.queryRenderedFeatures(point, {
+              layers: ['restaurants-layer']
+            });
+            document.getElementById('text-description').innerHTML = restaurant.length ?
+              `<h3>${restaurant[0].properties.NAME}</h3>
+              <p><strong>Address:</strong> ${restaurant[0].properties.ADDRESS} </p>
+              <p><strong> Seat Capacity:</strong> ${restaurant[0].properties.SEAT_CAP}
+              <p><strong>Score Inspection:</strong> ${restaurant[0].properties.SCORE_INSPECTION}</p>` 
+              :
+              `<p>Hover over a restaurant!</p>`;
+          });
+        });
+      }
+
+      // Function to filter the navigation menu items
+      function myFunction() {
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById('myInput');
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL");
+        li = ul.getElementsByTagName('li');
+
+        for (i = 0; i < li.length; i++) {
+          a = li[i].getElementsByTagName("a")[0];
+          txtValue = a.textContent || a.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+          } else {
+            li[i].style.display = "none";
           }
         }
+      }
 
-        geojsonFetch();
+      // Call the function to fetch and display GeoJSON data
+      geojsonFetch();
     </script>
   </body>
 </html>

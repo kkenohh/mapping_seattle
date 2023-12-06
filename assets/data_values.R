@@ -6,7 +6,7 @@ sf_data <- st_read(geojson_file)
 str(sf_data)
 
 #Max Score Inspection, 98
-sd_data$SCORE_INSPECTION <- as.numeric(sd_data$SCORE_INSPECTION)
+sf_data$SCORE_INSPECTION <- as.numeric(sf_data$SCORE_INSPECTION)
 max_score_insp <- max(sf_data$SCORE_INSPECTION, na.rm = TRUE)
 
 #Max Violation Points, 25

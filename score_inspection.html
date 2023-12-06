@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Metadata section -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapping Restaurants in Seattle</title>
@@ -11,32 +12,34 @@
   </head>
   <body>
 
-        <!-- Adding a map option box -->
+        <!-- Navigation and Search box -->
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search type of Chloropleth">
         <ul id="myUL">
             <li><a href="index.html">Index</a></li>
-            <li><a href="score_inspection.html">score Inspection</a></li>
-    
-            <li><a href="violation_points.html">Violoation</a></li>
+            <li><a href="score_inspection.html">Score Inspection</a></li>
+            <li><a href="violation_points.html">Violation</a></li>
             <li><a href="risk_exposure.html">Risk</a></li>
         </ul>
-    
+
+    <!-- Map overlay container -->
     <div class='map-overlay' id='legend'></div>
 
+    <!-- Main content container -->
     <main id="container">
+      <!-- Filter bar and text description -->
       <div id="filter-bar">
-        
         <h2 id="text-bar-filter"> Restaurant Information</h2>
-        <div id = "text-description"> Hover over a location!</div>
-
+        <div id="text-description"> Hover over a location!</div>
       </div>
+      
+      <!-- Map container -->
       <div id="map"></div>
     </main>
     
 
     <script>
-        mapboxgl.accessToken = 
-          'pk.eyJ1Ijoiam9obnNjaCIsImEiOiJjbG9zdmtkb20wM3huMnFwa2Q0cWk2cnlmIn0.th6ktuM1-OmJ9_-Q58ru4Q';
+        // Mapbox setup
+        mapboxgl.accessToken = 'pk.eyJ1Ijoiam9obnNjaCIsImEiOiJjbG9zdmtkb20wM3huMnFwa2Q0cWk2cnlmIn0.th6ktuM1-OmJ9_-Q58ru4Q';
         let map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/outdoors-v12',
@@ -44,17 +47,20 @@
             center: [-122.3, 47.55]
         });
 
+        // Function to fetch GeoJSON data
         async function geojsonFetch() {
             let response, restaurants; 
             response = await fetch('assets/Cleaned_Restaurant_Inspections.geojson');
             restaurants = await response.json();
 
             map.on('load', function loadingData() {
+                // Add GeoJSON source
                 map.addSource('restaurants', {
                     type: 'geojson',
                     data: restaurants
                 });
 
+                // Add a circle layer to represent restaurants on the map
                 map.addLayer({
                 'id': 'restaurants-layer',
                 'type': 'circle',
@@ -80,6 +86,7 @@
                 }
             });
 
+            // Legend for the map overlay
             const layers = [
                     '0-69',
                     '70-79',
@@ -97,6 +104,7 @@
             const legend = document.getElementById('legend');
             legend.innerHTML = "<b>Score Inspection<br>";
 
+            // Populate legend
             layers.forEach((layer, i) => {
                 const color = colors[i];
                 const item = document.createElement('div');
@@ -111,21 +119,23 @@
                 legend.appendChild(item);
             });
 
-                map.on('mousemove', ({point}) => {
-                    const restaurant = map.queryRenderedFeatures(point, {
-                        layers: ['restaurants-layer']
-                    });
-                    document.getElementById('text-description').innerHTML = restaurant.length ?
-                        `<h3>${restaurant[0].properties.NAME}</h3>
-                        <p><strong>Address:</strong> ${restaurant[0].properties.ADDRESS} </p>
-                        <p><strong> Seat Capacity:</strong> ${restaurant[0].properties.SEAT_CAP}
-                        <p><strong>Score Inspection:</strong> ${restaurant[0].properties.SCORE_INSPECTION}</p>` 
-                        :
-                        `<p>Hover over a restaurant!</p>`
+            // Display restaurant information on map hover
+            map.on('mousemove', ({point}) => {
+                const restaurant = map.queryRenderedFeatures(point, {
+                    layers: ['restaurants-layer']
+                });
+                document.getElementById('text-description').innerHTML = restaurant.length ?
+                    `<h3>${restaurant[0].properties.NAME}</h3>
+                    <p><strong>Address:</strong> ${restaurant[0].properties.ADDRESS} </p>
+                    <p><strong> Seat Capacity:</strong> ${restaurant[0].properties.SEAT_CAP}
+                    <p><strong>Score Inspection:</strong> ${restaurant[0].properties.SCORE_INSPECTION}</p>` 
+                    :
+                    `<p>Hover over a restaurant!</p>`
                 });
             });
         }
 
+        // Function to filter the navigation menu items
         function myFunction() {
           // Declare variables
           var input, filter, ul, li, a, i, txtValue;
@@ -146,6 +156,7 @@
           }
         }
 
+        // Fetch and display GeoJSON data
         geojsonFetch();
     </script>
   </body>

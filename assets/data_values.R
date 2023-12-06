@@ -1,5 +1,5 @@
 library(sf)
-
+# Thinking of creating a summary page that shows the overall inspection
 # Create data table from assets
 geojson_file <- "Cleaned_Restaurant_Inspections.geojson"
 sf_data <- st_read(geojson_file)

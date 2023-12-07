@@ -22,8 +22,8 @@
     <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search type of Chloropleth">
     <ul id="myUL">
       <li><a href="index.html">Index</a></li>
-      <li><a href="score_inspection.html">score Inspection</a></li>
-      <li><a href="violation_points.html">Violoation</a></li>
+      <li><a href="score_inspection.html">Score Inspection</a></li>
+      <li><a href="violation_points.html">Violation</a></li>
       <li><a href="risk_exposure.html">Risk</a></li>
     </ul>
 
@@ -72,14 +72,14 @@
             'type': 'circle',
             'source': 'restaurants',
             'paint': {
-              'circle-radius': 6,
-              'circle-stroke-width': 1,
+              'circle-radius':4,
+              'circle-stroke-width': 0.5,
               'circle-color': [
                 'match',
                 ['get', 'RISK'],
-                'I', '#00ff40',   // Color for "GREEN"
-                'II', '#ffff00',  // Color for "YELLOW"
-                'III', '#ff0000', // Color for "RED"
+                'I', '#ffad87',   // Color for Light Orange
+                'II', '#e8ba02',  // Color for Light Yellow
+                'III', '#007d0a', // Color for Dark Green
                 '#808080'         // Color for missing values (Gray)
               ],
               'circle-stroke-color': 'black',
@@ -88,8 +88,8 @@
           });
 
           // Create legend for map overlay
-          const layers = ['I', 'II', 'III', 'No Values'];
-          const colors = ['#00ff40', '#ffff00', '#ff0000', '#808080'];
+          const layers = ['Limited Food Prep', 'Moderate Food Prep', 'Total Food Prep', 'Unassigned'];
+          const colors = ['#ffad87', '#e8ba02', '#007d0a', '#808080'];
           const legend = document.getElementById('legend');
           legend.innerHTML = "<b>Risk type<br>";
 

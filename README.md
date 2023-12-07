@@ -20,3 +20,5 @@ To construct this app we used: Mapbox gl js API for mapping and GitHub for versi
 [Tutorial on Custom Basemap](https://www.e-education.psu.edu/geog865/node/325)
 <br>
 [Filter example](https://docs.mapbox.com/mapbox-gl-js/example/filter-markers/)
+<br>
+[Description of Risk Levels](https://kingcounty.gov/en/legacy/depts/health/environmental-health/food-safety/food-business-permit/risk-levels-permit-classifications)

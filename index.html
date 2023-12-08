@@ -11,16 +11,6 @@
   </head>
   <body>
 
-        <!-- Adding a map option box -->
-        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search type of Chloropleth">
-        <ul id="myUL">
-            <li><a href="index.html">Index</a></li>
-            <li><a href="score_inspection.html">Score Inspection</a></li>
-    
-            <li><a href="violation_points.html">Violation</a></li>
-            <li><a href="risk_exposure.html">Risk</a></li>
-        </ul>
-          
     
     <main id="container">
       <div id="filter-bar">
@@ -33,6 +23,17 @@
       <div id="title-bar">
           <h2 id="title-text">Mapping Seattle: Navigating Restaurant Health and Safety </h2>
       </div>
+
+      <div class="dropdown">
+        <button class="dropbtn"> <span class="arrow">&#9662;</span></button>
+        <div class="dropdown-content">
+          <a href="index.html">Home</a>
+          <a href="score_inspection.html">Score Inspection</a>
+          <a href="violation_points.html">Violation</a>
+          <a href="risk_exposure.html">Risk</a>
+        </div>
+      </div>
+
     </main>
     
 
@@ -81,26 +82,6 @@
                         `<p>Hover over a restaurant!</p>`
                 });
             });
-        }
-
-        function myFunction() {
-          // Declare variables
-          var input, filter, ul, li, a, i, txtValue;
-          input = document.getElementById('myInput');
-          filter = input.value.toUpperCase();
-          ul = document.getElementById("myUL");
-          li = ul.getElementsByTagName('li');
-
-          // Loop through all list items, and hide those who don't match the search query
-          for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
-            txtValue = a.textContent || a.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-              li[i].style.display = "";
-            } else {
-              li[i].style.display = "none";
-            }
-          }
         }
 
         geojsonFetch();

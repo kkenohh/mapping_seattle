@@ -34,6 +34,9 @@
       
       <!-- Map container -->
       <div id="map"></div>
+      <div id="title-bar">
+        <h2 id="title-text">Mapping Seattle: Navigating Restaurant Health and Safety </h2>
+    </div>
     </main>
     
 
@@ -73,10 +76,10 @@
                           ['get', 'VIOLATIONTYPE'],
                           'RED', '#ff0000',   // Color for "RED"
                           'BLUE', '#0000ff',  // Color for "BLUE"
-                          '#808080'            // Default color for missing values (Gray)
+                          'rgba(100, 100, 100, -0.0)'            // Default color for missing values (Gray)
                       ],
-                      'circle-stroke-color': 'black',
-                      'circle-opacity': 0.4
+                      'circle-stroke-color': 'rgba(100, 100, 100, -0.0)',
+                      'circle-opacity': .7
                   }
               });
 
@@ -84,13 +87,11 @@
             const layers = [
                     'Critical Violations',
                     'Non-Critical Violations',
-                    'Missing Values'
                 ];
 
             const colors = [
                 '#ff0000',
                 '#0000ff',
-                '#808080'
             ];
 
             const legend = document.getElementById('legend');

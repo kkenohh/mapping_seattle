@@ -57,8 +57,8 @@ body {
 /* Style for the dropdown container */
 .dropdown {
   position: absolute;
-  top: 2.4%;
-  left: 32%;
+  top: 34px;
+  left: 800px;
   transform: translateY(-50%);
   display: inline-block;
 }

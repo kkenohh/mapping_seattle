@@ -7,7 +7,9 @@
     <meta name="author" content="Group 7 (Ken, Lesther, Jack, Jason, Falldiusa)">
     <meta name="description" content="Group 7's final project mapping restaurants in Seattle for user convenience">
     <link rel="stylesheet" href="./css/styles.css">
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css' rel='stylesheet' />
+
   </head>
   <body>
 
@@ -39,10 +41,10 @@
 
     <script>
         mapboxgl.accessToken = 
-          'pk.eyJ1Ijoiam9obnNjaCIsImEiOiJjbG9zdmtkb20wM3huMnFwa2Q0cWk2cnlmIn0.th6ktuM1-OmJ9_-Q58ru4Q';
+          'pk.eyJ1Ijoia2tlbm9oIiwiYSI6ImNsb29zdHhyNDAzMm8yanA4bWUyZHNzZmkifQ.4s3sT9k4oX1RmrCnnNC_DQ';
         let map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/outdoors-v12',
+            style: 'mapbox://styles/kkenoh/clpypkhow00jm01opg1mr1eby',
             zoom: 10,
             center: [-122.3, 47.55]
         });

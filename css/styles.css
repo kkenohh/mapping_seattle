@@ -1,67 +1,76 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
 }
 
 #container {
-    display: flex;
-    height: 100vh;
-    flex-direction: row;
-    align-items: stretch;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
 }
 
-#title-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
+.navbar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
   background-color: black;
+}
+
+.map-filter-container {
+  height: 100%;
   width: 100%;
-  height: 5%;
+  display: flex;
+  flex-direction: row;
 }
 
 #title-text {
-  position: absolute;
-  color:#f6f6f6;
-  font-size: 33px;
-  top: -20%;
-  left: 0;
+  color:white;
+  font-size: 2rem;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 #filter-bar {
-    position: absolute;
-    top: 6%;
-    right: 0;
-    height: 20%;
-    max-width: 20%; /* Set a maximum height for the filter-bar */
-    overflow-y: auto; /* Enable vertical scroll if content exceeds the max height */
-    background-color: #fff;
-    padding: 15px;
-    box-sizing: content-box;
-    z-index: 1; 
-    display: flex;
-    flex-direction: column;
-    opacity: .7;
-    border-radius: 25px;
+  position: absolute;
+  top: 25%;
+  right: 5%;
+  height: 20%;
+  max-width: 20%;
+  overflow-y: auto; 
+  background-color: #fff;
+  padding: 15px;
+  box-sizing: content-box;
+  z-index: 1; 
+  display: flex;
+  flex-direction: column;
+  opacity: .8;
+  border-radius: 25px;
 }
 
 #text-bar-filter {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 #map {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 /* Style for the dropdown container */
-.dropdown {
+/* .dropdown {
   position: absolute;
   top: 34px;
   left: 800px;
   transform: translateY(-50%);
   display: inline-block;
-}
+} */
 
 /* Style for the dropdown button */
 .dropbtn {
@@ -99,7 +108,7 @@ body {
 /* Style for the dropdown arrow */
 .arrow {
   display: inline-block;
-  margin-left: 5px;
+  font-size: 3rem;
 }
 
 /* Display dropdown content when hovering over the arrow */
@@ -107,26 +116,30 @@ body {
   display: block;
 }
 
-  #legend {
-    position: absolute;
-    padding: 10px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    line-height: 18px;
-    height: 120px;
-    margin-bottom: 40px;
-    width: 300px;
-    left: 20px;
-    bottom: -1.5%; 
-    background-color: #fff;
-    opacity: .7;
-    font-size: 20px;
-    border-radius: 25px;
+#legend {
+  position: absolute;
+  padding: 1rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  line-height: 18px;
+  height: auto;
+  margin-bottom: 40px;
+  width: 20rem;
+  left: 3rem;
+  bottom: 1rem; 
+  background-color: #fff;
+  opacity: .8;
+  font-size: 1.2rem;
+  border-radius: 25px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
 }
 
 .legend-key {
-    display: inline-block;
-    border-radius: 20%;
-    width: 10px;
-    height: 10px;
-    margin-right: 5px;
+  display: inline-block;
+  border-radius: 20%;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
 }

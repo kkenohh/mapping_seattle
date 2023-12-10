@@ -15,27 +15,25 @@
 
     
     <main id="container">
-      <div id="filter-bar">
-        
-        <h2 id="text-bar-filter"> Restaurant Information</h2>
-        <div id = "text-description"> Hover over a location!</div>
-
-      </div>
-      <div id="map"></div>
-      <div id="title-bar">
-          <h2 id="title-text">Mapping Seattle: Navigating Restaurant Health and Safety </h2>
-      </div>
-
-      <div class="dropdown">
-        <button class="dropbtn"> <span class="arrow">&#9662;</span></button>
-        <div class="dropdown-content">
-          <a href="index.html">Home</a>
-          <a href="score_inspection.html">Score Inspection</a>
-          <a href="violation_points.html">Violation</a>
-          <a href="risk_exposure.html">Risk</a>
+      <div class="navbar-container">
+        <h2 id="title-text">Mapping Seattle: Navigating Restaurant Health and Safety </h2>
+        <div class="dropdown">
+          <div class="dropbtn"> <span class="arrow">&#9662;</span></div>
+          <div class="dropdown-content">
+            <a href="index.html">Home</a>
+            <a href="score_inspection.html">Score Inspection</a>
+            <a href="violation_points.html">Violation</a>
+            <a href="risk_exposure.html">Risk</a>
+          </div>
         </div>
       </div>
-
+      <div class="map-filter-container">
+        <div id="filter-bar">
+          <h2 id="text-bar-filter"> Restaurant Information</h2>
+          <div id = "text-description"> Click on a location!</div>
+        </div>
+        <div id="map"></div>
+      </div>
     </main>
     
 
@@ -46,7 +44,7 @@
             container: 'map',
             style: 'mapbox://styles/kkenoh/clpypkhow00jm01opg1mr1eby',
             zoom: 10,
-            center: [-122.3, 47.55]
+            center: [-122.2, 47.55]
         });
 
         async function geojsonFetch() {
@@ -68,7 +66,8 @@
                         'circle-radius': 6,
                         'circle-stroke-width': .5,
                         'circle-color': '#f76a6a',
-                        'circle-stroke-color': 'black'
+                        'circle-stroke-color': 'black',
+                        'circle-opacity': .8
                     }
                 });
                 map.on('click', ({point}) => {

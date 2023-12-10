@@ -16,30 +16,26 @@
     <!-- Map overlay container -->
     <div class='map-overlay' id='legend'></div>
 
-    <!-- Main content container -->
     <main id="container">
-      <!-- Filter bar and text description -->
-      <div id="filter-bar">
-        <h2 id="text-bar-filter"> Restaurant Information</h2>
-        <div id="text-description"> Hover over a location!</div>
-      </div>
-      
-      <!-- Map container -->
-      <div id="map"></div>
-      <div id="title-bar">
+      <div class="navbar-container">
         <h2 id="title-text">Mapping Seattle: Navigating Restaurant Health and Safety </h2>
-    </div>
-
-    <div class="dropdown">
-      <button class="dropbtn"> <span class="arrow">&#9662;</span></button>
-      <div class="dropdown-content">
-        <a href="index.html">Home</a>
-        <a href="score_inspection.html">Score Inspection</a>
-        <a href="violation_points.html">Violation</a>
-        <a href="risk_exposure.html">Risk</a>
+        <div class="dropdown">
+          <div class="dropbtn"> <span class="arrow">&#9662;</span></div>
+          <div class="dropdown-content">
+            <a href="index.html">Home</a>
+            <a href="score_inspection.html">Score Inspection</a>
+            <a href="violation_points.html">Violation</a>
+            <a href="risk_exposure.html">Risk</a>
+          </div>
+        </div>
       </div>
-    </div>
-
+      <div class="map-filter-container">
+        <div id="filter-bar">
+          <h2 id="text-bar-filter"> Restaurant Information</h2>
+          <div id = "text-description"> Click on a location!</div>
+        </div>
+        <div id="map"></div>
+      </div>
     </main>
     
 
@@ -82,7 +78,7 @@
                           'BLUE', '#0000ff',  // Color for "BLUE"
                           'rgba(100, 100, 100, -0.0)'            // Default color for missing values (Gray)
                       ],
-                      'circle-stroke-color': 'rgba(100, 100, 100, -0.0)',
+                      'circle-stroke-color': 'black',
                       'circle-opacity': .7
                   }
               });
@@ -91,11 +87,13 @@
             const layers = [
                     'Critical Violations',
                     'Non-Critical Violations',
+                    '*Empty circle means N/A*'
                 ];
 
             const colors = [
                 '#ff0000',
                 '#0000ff',
+                'rgba(100, 100, 100, -0.0)'
             ];
 
             const legend = document.getElementById('legend');

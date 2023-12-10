@@ -17,31 +17,27 @@
     <!-- Map overlay container -->
     <div class='map-overlay' id='legend'></div>
 
-    <!-- Main content container -->
     <main id="container">
-      <!-- Filter bar and text description -->
-      <div id="filter-bar">
-        <h2 id="text-bar-filter"> Restaurant Information</h2>
-        <div id="text-description"> Hover over a location!</div>
-      </div>
-      
-      <!-- Map container -->
-      <div id="map"></div>
-      <div id="title-bar">
-        <h2 id="title-text">Mapping Seattle: Navigating Restaurant Health and Safety </h2>
-    </div>
-
-    <div class="dropdown">
-      <button class="dropbtn"> <span class="arrow">&#9662;</span></button>
-      <div class="dropdown-content">
-        <a href="index.html">Home</a>
-        <a href="score_inspection.html">Score Inspection</a>
-        <a href="violation_points.html">Violation</a>
-        <a href="risk_exposure.html">Risk</a>
-      </div>
-    </div>
-
-    </main>
+        <div class="navbar-container">
+          <h2 id="title-text">Mapping Seattle: Navigating Restaurant Health and Safety </h2>
+          <div class="dropdown">
+            <div class="dropbtn"> <span class="arrow">&#9662;</span></div>
+            <div class="dropdown-content">
+              <a href="index.html">Home</a>
+              <a href="score_inspection.html">Score Inspection</a>
+              <a href="violation_points.html">Violation</a>
+              <a href="risk_exposure.html">Risk</a>
+            </div>
+          </div>
+        </div>
+        <div class="map-filter-container">
+          <div id="filter-bar">
+            <h2 id="text-bar-filter"> Restaurant Information</h2>
+            <div id = "text-description"> Click on a location!</div>
+          </div>
+          <div id="map"></div>
+        </div>
+      </main>
     
 
     <script>
@@ -79,15 +75,15 @@
                     'circle-color': [
                         'step',
                         ['to-number', ['get', 'SCORE_INSPECTION']],
-                        '#ff0000',   // stop_output_0
+                        '#FFB88E',   // stop_output_0
                         69,          // stop_input_0
-                        '#ffff00',   // stop_output_1
+                        '#FB9675',   // stop_output_1
                         79,         // stop_input_1
-                        '#0040ff',   // stop_output_2
+                        '#F55B49',   // stop_output_2
                         89,         // stop_input_2
-                        '#00ff00',   // stop_output_3
+                        '#F02B25',   // stop_output_3
                         100,         // stop_input_3
-                        '#00ff00',   // Default color for values above 90
+                        '#F02B25',   // Default color for values above 90
                     ],
                     'circle-stroke-color': 'black',
                     'circle-opacity': .4
@@ -103,10 +99,10 @@
                 ];
 
             const colors = [
-                '#ff0000',
-                '#ffff00',
-                '#0040ff',
-                '#00ff00',
+                '#FFB88E',
+                '#FB9675',
+                '#F55B49',
+                '#F02B25',
             ];
 
             const legend = document.getElementById('legend');

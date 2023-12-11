@@ -6,12 +6,13 @@ The goal of this project is to create a resource wherein users can easily view i
 <br>
 [Link to data](https://gis-kingcounty.opendata.arcgis.com/datasets/kingcounty::restaurant-inspections-restaurant-inspections-point/explore?location=47.449024%2C-121.952400%2C10.87)
 <br>
-**Placeholder for screenshots once more final version of app is deployed**
 ### Screenshots From Proposal
 ![](./assets/seattle1.webp)
 ![](./assets/seattle2.webp)
-![](./assets/seattle1.webp)
-
+<br>
+### Screenshots From Project
+![](./assets/ss1.png)
+![](./assets/ss2.png)
 
 <br>
 ### Main Functions and Applied Libraries

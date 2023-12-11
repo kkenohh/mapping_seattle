@@ -53,7 +53,7 @@
         // Function to fetch GeoJSON data
         async function geojsonFetch() {
             let response, restaurants; 
-            response = await fetch('assets/Cleaned_Restaurant_Inspections.geojson');
+            response = await fetch('assets/Cleaned_Restaurant_Inspections_No_Dupes.geojson');
             restaurants = await response.json();
 
             map.on('load', function loadingData() {

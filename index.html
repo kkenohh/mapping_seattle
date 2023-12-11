@@ -28,11 +28,12 @@
         <h2 id="title-text">Mapping Seattle: Navigating Restaurant Health and Safety </h2>
       </div>
       <div class="map-filter-container">
-        <div id="filter-bar">
-          <h2 id="text-bar-filter"> Restaurant Information</h2>
-          <div id = "text-description"> Click on a location!</div>
-        </div>
         <div id="map"></div>
+        <div id="filter-bar">
+          <h2 id="text-bar-filter">Restaurant List</h2>
+          <div id = "text-description">Click on a location!</div>
+          <div id="listings" class="listings"></div>
+        </div>
       </div>
     </main>
     
@@ -47,10 +48,82 @@
             center: [-122.2, 47.55]
         });
 
+        function flyToStore(currentFeature) {
+          
+
+          map.flyTo({
+            center: currentFeature.geometry.coordinates,
+            zoom: 15
+          });
+
+          map.setPaintProperty('restaurants-layer', 'circle-color', [
+            'match',
+            ['get', 'NAME'],
+            currentFeature.properties.NAME, '#800080',  // Highlight color
+            '#f76a6a'  // Default color
+          ]);
+          
+          map.setPaintProperty('restaurants-layer', 'circle-radius', [
+            'match', 
+            ['get', 'NAME'], 
+            currentFeature.properties.NAME, 10, 6
+          ]);
+        }
+
+        function buildLocationList(restaurants) {
+          const listings = document.getElementById('listings');
+          listings.innerHTML = '';
+          for (let restaurant of restaurants) {
+            /* Add a new listing section to the sidebar. */
+            const listings = document.getElementById('listings');
+            const listing = listings.appendChild(document.createElement('div'));
+            /* Assign a unique `id` to the listing. */
+            listing.id = `listing-${restaurant.properties.ID}`;
+            /* Assign the `item` class to each listing for styling. */
+            listing.className = 'item';
+
+            /* Add the link to the individual listing created above. */
+            const link = listing.appendChild(document.createElement('a'));
+            link.href = '#';
+            link.className = 'title';
+            link.id = `link-${restaurant.properties.ID}`;
+            link.innerHTML = `${restaurant.properties.NAME}`;
+
+            /* Add details to the individual listing. */
+            const details = listing.appendChild(document.createElement('div'));
+            details.innerHTML = `Address: ${restaurant.properties.ADDRESS}\n`
+            details.innerHTML += `Seat Capacity: ${restaurant.properties.SEAT_CAP}\n`;
+            details.innerHTML += `Inspection Score: ${restaurant.properties.SCORE_INSPECTION}\n`;
+            if (restaurant.properties.distance) {
+              const roundedDistance = Math.round(restaurant.properties.distance * 100) / 100;
+              details.innerHTML += `<div><strong>${roundedDistance} miles away</strong></div>`;
+            }
+
+            link.addEventListener('click', function () {
+              for (const feature of restaurants) {
+                if (this.id === `link-${feature.properties.ID}`) {
+                  flyToStore(feature);
+                  // createPopUp(feature);
+                }
+              }
+              const activeItem = document.getElementsByClassName('active');
+              if (activeItem[0]) {
+                activeItem[0].classList.remove('active');
+              }
+              this.parentNode.classList.add('active');
+            });
+          }
+
+          
+        }
+
         async function geojsonFetch() {
             let response, restaurants; 
-            response = await fetch('assets/Cleaned_Restaurant_Inspections.geojson');
+            response = await fetch('assets/Cleaned_Restaurant_Inspections_No_Dupes.geojson');
             restaurants = await response.json();
+            restaurants.features.forEach(function (data, i) {
+              data.properties.ID = i;
+            });
 
             map.on('load', function loadingData() {
                 map.addSource('restaurants', {
@@ -75,37 +148,28 @@
                     const restaurant = map.queryRenderedFeatures(point, {
                         layers: ['restaurants-layer']
                     });
+                    
+                    buildLocationList(restaurant);
 
                     if (restaurant.length) {
                       // Fly to the selected restaurant and zoom in
-                      map.flyTo({
-                          center: restaurant[0].geometry.coordinates,
-                          zoom: 15
-                      });
+                      flyToStore(restaurant[0])
 
-                      // Change the style of the selected restaurant to highlight it
-                      map.setPaintProperty('restaurants-layer', 'circle-color', [
-                          'match',
-                          ['get', 'NAME'],
-                          restaurant[0].properties.NAME, '#800080',  // Highlight color
-                          '#f76a6a'  // Default color
-                      ]);
-                      
-                      map.setPaintProperty('restaurants-layer', 'circle-radius', [
-                          'match', 
-                          ['get', 'NAME'], 
-                          restaurant[0].properties.NAME, 10, 6
-                      ]);
+                      const activeItem = document.getElementsByClassName('active');
+                      if (activeItem[0]) {
+                        activeItem[0].classList.remove('active');
+                      }
+                      this.parentNode.classList.add('active');
 
                     }
 
-                    document.getElementById('text-description').innerHTML = restaurant.length ?
-                        `<h3>${restaurant[0].properties.NAME}</h3>
-                        <p><strong>Address:</strong> ${restaurant[0].properties.ADDRESS} </p>
-                        <p><strong> Seat Capacity:</strong> ${restaurant[0].properties.SEAT_CAP}
-                        <p><strong>Score Inspection:</strong> ${restaurant[0].properties.SCORE_INSPECTION}</p>` 
-                        :
-                        `<p>Hover over a restaurant!</p>`
+                    // document.getElementById('text-description').innerHTML = restaurant.length ?
+                    //     `<h3>${restaurant[0].properties.NAME}</h3>
+                    //     <p><strong>Address:</strong> ${restaurant[0].properties.ADDRESS} </p>
+                    //     <p><strong> Seat Capacity:</strong> ${restaurant[0].properties.SEAT_CAP}
+                    //     <p><strong>Score Inspection:</strong> ${restaurant[0].properties.SCORE_INSPECTION}</p>` 
+                    //     :
+                    //     `<p>Hover over a restaurant!</p>`
                 });
             });
         }

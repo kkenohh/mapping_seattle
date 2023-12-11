@@ -25,7 +25,7 @@
             <a href="risk_exposure.html">Risk</a>
           </div>
         </div>
-        <h2 id="title-text">Mapping Seattle: Navigating Restaurant Health and Safety </h2>
+        <h2 id="title-text">Mapping Seattle: Navigating Restaurant Health and Safety</h2>
       </div>
       <div class="map-filter-container">
         <div id="map"></div>
@@ -49,8 +49,6 @@
         });
 
         function flyToStore(currentFeature) {
-          
-
           map.flyTo({
             center: currentFeature.geometry.coordinates,
             zoom: 15
@@ -126,45 +124,46 @@
             });
 
             map.on('load', function loadingData() {
-                map.addSource('restaurants', {
-                    type: 'geojson',
-                    data: restaurants
-                });
 
-                map.addLayer({
-                    'id': 'restaurants-layer',
-                    'type': 'circle',
-                    'source': 'restaurants',
-                    'paint': {
-                        'circle-radius': 6,
-                        'circle-stroke-width': .5,
-                        'circle-color': '#f76a6a',
-                        'circle-stroke-color': 'black',
-                        'circle-opacity': .8
-                    }
-                });
+              map.addSource('restaurants', {
+                  type: 'geojson',
+                  data: restaurants
+              });
 
-                map.on('click', ({point}) => {
-                    const restaurant = map.queryRenderedFeatures(point, {
-                        layers: ['restaurants-layer']
-                    });
-                    
-                    buildLocationList(restaurant);
+              map.addLayer({
+                  'id': 'restaurants-layer',
+                  'type': 'circle',
+                  'source': 'restaurants',
+                  'paint': {
+                      'circle-radius': 6,
+                      'circle-stroke-width': .5,
+                      'circle-color': '#f76a6a',
+                      'circle-stroke-color': 'black',
+                      'circle-opacity': .8
+                  }
+              });
 
-                    if (restaurant.length) {
-                      // Fly to the selected restaurant and zoom in
-                      flyToStore(restaurant[0])
+              map.on('click', ({point}) => {
+                  const restaurant = map.queryRenderedFeatures(point, {
+                      layers: ['restaurants-layer']
+                  });
+                  
+                  buildLocationList(restaurant);
 
-                    }
+                  if (restaurant.length) {
+                    // Fly to the selected restaurant and zoom in
+                    flyToStore(restaurant[0])
 
-                    // document.getElementById('text-description').innerHTML = restaurant.length ?
-                    //     `<h3>${restaurant[0].properties.NAME}</h3>
-                    //     <p><strong>Address:</strong> ${restaurant[0].properties.ADDRESS} </p>
-                    //     <p><strong> Seat Capacity:</strong> ${restaurant[0].properties.SEAT_CAP}
-                    //     <p><strong>Score Inspection:</strong> ${restaurant[0].properties.SCORE_INSPECTION}</p>` 
-                    //     :
-                    //     `<p>Hover over a restaurant!</p>`
-                });
+                  }
+
+                  // document.getElementById('text-description').innerHTML = restaurant.length ?
+                  //     `<h3>${restaurant[0].properties.NAME}</h3>
+                  //     <p><strong>Address:</strong> ${restaurant[0].properties.ADDRESS} </p>
+                  //     <p><strong> Seat Capacity:</strong> ${restaurant[0].properties.SEAT_CAP}
+                  //     <p><strong>Score Inspection:</strong> ${restaurant[0].properties.SCORE_INSPECTION}</p>` 
+                  //     :
+                  //     `<p>Hover over a restaurant!</p>`
+              });
             });
         }
 

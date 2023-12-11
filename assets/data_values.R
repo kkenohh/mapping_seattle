@@ -18,5 +18,3 @@ risk <- table(sf_data$RISK)
 count_rI <- risk_I["I"]         #608
 count_rII <- risk_I["II"]       #887
 count_rIII <- risk_I["III"]     #7081
-
-

@@ -25,7 +25,6 @@ def get_rid_duplicates():
                driver='GeoJSON')
 
 
-
 def main():
     # clean_restaurant_data()
     get_rid_duplicates()

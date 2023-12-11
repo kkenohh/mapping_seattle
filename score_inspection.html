@@ -128,6 +128,42 @@
                 const restaurant = map.queryRenderedFeatures(point, {
                     layers: ['restaurants-layer']
                 });
+
+                if (restaurant.length) {
+                      // Fly to the selected restaurant and zoom in
+                      map.flyTo({
+                          center: restaurant[0].geometry.coordinates,
+                          zoom: 15
+                      });
+
+                      // Change the style of the selected restaurant to highlight it
+                      map.setPaintProperty('restaurants-layer', 'circle-color', [
+                          'match',
+                          ['get', 'NAME'],
+                          restaurant[0].properties.NAME,
+                          'purple', // Color for the selected restaurant
+                          // Original color scheme based on 'SCORE_INSPECTION'
+                          ['step',
+                              ['to-number', ['get', 'SCORE_INSPECTION']],
+                              '#FFB88E',   // stop_output_0
+                              69,          // stop_input_0
+                              '#FB9675',   // stop_output_1
+                              79,         // stop_input_1
+                              '#F55B49',   // stop_output_2
+                              89,         // stop_input_2
+                              '#F02B25',   // stop_output_3
+                              100,         // stop_input_3
+                              '#F02B25',   // Default color for values above 90
+                          ]
+                      ]);
+                      
+                      map.setPaintProperty('restaurants-layer', 'circle-radius', [
+                          'match', 
+                          ['get', 'NAME'], 
+                          restaurant[0].properties.NAME, 10, 6
+                      ]);
+                }
+
                 document.getElementById('text-description').innerHTML = restaurant.length ?
                     `<h3>${restaurant[0].properties.NAME}</h3>
                     <p><strong>Address:</strong> ${restaurant[0].properties.ADDRESS} </p>

@@ -70,10 +70,35 @@
                         'circle-opacity': .8
                     }
                 });
+
                 map.on('click', ({point}) => {
                     const restaurant = map.queryRenderedFeatures(point, {
                         layers: ['restaurants-layer']
                     });
+
+                    if (restaurant.length) {
+                      // Fly to the selected restaurant and zoom in
+                      map.flyTo({
+                          center: restaurant[0].geometry.coordinates,
+                          zoom: 15
+                      });
+
+                      // Change the style of the selected restaurant to highlight it
+                      map.setPaintProperty('restaurants-layer', 'circle-color', [
+                          'match',
+                          ['get', 'NAME'],
+                          restaurant[0].properties.NAME, '#800080',  // Highlight color
+                          '#f76a6a'  // Default color
+                      ]);
+                      
+                      map.setPaintProperty('restaurants-layer', 'circle-radius', [
+                          'match', 
+                          ['get', 'NAME'], 
+                          restaurant[0].properties.NAME, 10, 6
+                      ]);
+
+                    }
+
                     document.getElementById('text-description').innerHTML = restaurant.length ?
                         `<h3>${restaurant[0].properties.NAME}</h3>
                         <p><strong>Address:</strong> ${restaurant[0].properties.ADDRESS} </p>

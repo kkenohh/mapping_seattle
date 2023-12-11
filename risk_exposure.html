@@ -114,6 +114,37 @@
             const restaurant = map.queryRenderedFeatures(point, {
               layers: ['restaurants-layer']
             });
+
+            if (restaurant.length) {
+                      // Fly to the selected restaurant and zoom in
+                      map.flyTo({
+                          center: restaurant[0].geometry.coordinates,
+                          zoom: 15
+                      });
+
+                      // Change the style of the selected restaurant to highlight it
+                      map.setPaintProperty('restaurants-layer', 'circle-color', [
+                          'match',
+                          ['get', 'NAME'],
+                          restaurant[0].properties.NAME,
+                          'purple', // Color for the selected restaurant
+                          // Original color scheme based on 'RISK'
+                          ['match',
+                              ['get', 'RISK'],
+                              'I', '#ffad87',   // Color for Light Orange
+                              'II', '#e8ba02',  // Color for Light Yellow
+                              'III', '#007d0a', // Color for Dark Green
+                              '#808080'         // Color for missing values (Gray)
+                          ]
+                      ]);
+                      
+                      map.setPaintProperty('restaurants-layer', 'circle-radius', [
+                          'match', 
+                          ['get', 'NAME'], 
+                          restaurant[0].properties.NAME, 10, 6
+                      ]);
+            }
+
             document.getElementById('text-description').innerHTML = restaurant.length ?
               `<h3>${restaurant[0].properties.NAME}</h3>
               <p><strong>Address:</strong> ${restaurant[0].properties.ADDRESS} </p>

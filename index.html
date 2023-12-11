@@ -154,13 +154,7 @@
                     if (restaurant.length) {
                       // Fly to the selected restaurant and zoom in
                       flyToStore(restaurant[0])
-
-                      const activeItem = document.getElementsByClassName('active');
-                      if (activeItem[0]) {
-                        activeItem[0].classList.remove('active');
-                      }
-                      this.parentNode.classList.add('active');
-
+                      
                     }
 
                     // document.getElementById('text-description').innerHTML = restaurant.length ?

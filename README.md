@@ -13,7 +13,6 @@ The goal of this project is to create a resource wherein users can easily view i
 ### Screenshots From Project
 ![](./assets/ss1.png)
 ![](./assets/ss2.png)
-
 <br>
 ### Main Functions and Applied Libraries
 This web app uses javascript as an operative backbone, using functions that access the mapbox API to create a basemap, as well as functions to provide information about points upon user interaction.

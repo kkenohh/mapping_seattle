@@ -151,7 +151,7 @@ body {
 
 .listings .item {
   border-bottom: 1px solid #eee;
-  padding: 10px;
+  padding: 1rem 0;
   text-decoration: none;
 }
 
